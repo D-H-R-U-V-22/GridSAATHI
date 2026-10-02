@@ -19,6 +19,12 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "FRONTEND/*": [
+        "./FRONTEND/*"
+      ],
+      "src/*": [
+        "./FRONTEND/*"
       ]
     },
     "allowImportingTsExtensions": true,

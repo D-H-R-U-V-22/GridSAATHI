@@ -21,7 +21,34 @@ npm run build
 
 ---
 
-## 2. Grid Architecture & Hierarchy
+## 2. Directory Structure & Architecture
+
+```
+/ (Workspace Root)
+├── FRONTEND/                  # All Frontend Folders & Application Code
+│   ├── app/                   # App routes & initialization
+│   ├── components/            # Reusable UI components & layouts (PowerHouseShell, PublicShell)
+│   ├── config/                # Grid topology, thresholds, i18n dictionaries
+│   ├── data/                  # Telemetry stores & interfaces
+│   ├── dev/                   # ScenarioLab & debug tools
+│   ├── domain/                # TypeScript domain models & types
+│   ├── features/              # Feature modules (PowerHouse & Public portals)
+│   ├── hooks/                 # Custom React hooks (useNow, etc.)
+│   ├── lib/                   # Utilities & formatting functions
+│   ├── store/                 # Zustand state stores
+│   ├── App.tsx                # App root component
+│   ├── main.tsx               # Client entry point
+│   └── index.css              # Global styles & Tailwind CSS
+├── src/                       # Symlink to FRONTEND (for backward compatibility)
+├── index.html                 # HTML entry point (points to /FRONTEND/main.tsx)
+├── vite.config.ts             # Vite configuration with FRONTEND aliases
+├── tsconfig.json              # TypeScript configuration
+└── package.json               # Root scripts & dependencies
+```
+
+---
+
+## 3. Grid Architecture & Hierarchy
 
 ```
 Power House (220/66/11kV Substation)
