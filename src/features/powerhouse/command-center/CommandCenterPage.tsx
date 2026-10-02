@@ -96,7 +96,7 @@ export const CommandCenterPage: React.FC = () => {
       {/* Page Header */}
       <div>
         <h1 className="text-2xl font-bold font-heading text-[#0C3B2B] tracking-tight">
-          Pragati Substation Command Center
+          Pragati Substation Dashboard
         </h1>
         <p className="text-xs text-[#5B6B62] mt-1">
           220kV primary distribution bus · Real-time renewable integration and load balancing

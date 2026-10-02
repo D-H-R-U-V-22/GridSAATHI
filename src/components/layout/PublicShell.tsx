@@ -10,6 +10,7 @@ import {
   MessageSquare,
   SlidersHorizontal,
   Zap,
+  Lightbulb,
 } from 'lucide-react';
 import { useSessionStore } from '../../store/useSessionStore';
 import { useAlertStore } from '../../store/useAlertStore';
@@ -40,6 +41,7 @@ export const PublicShell: React.FC = () => {
     { to: '/colony', label: language === 'hi' ? 'होम' : 'Home', icon: <Home className="w-5 h-5" /> },
     { to: '/colony/forecast', label: language === 'hi' ? 'अनुमान' : 'Forecast', icon: <TrendingUp className="w-5 h-5" /> },
     { to: '/colony/alerts', label: language === 'hi' ? 'अलर्ट' : 'Alerts', icon: <Bell className="w-5 h-5" /> },
+    { to: '/colony/recommendations', label: language === 'hi' ? 'समाधान' : 'Solutions', icon: <Lightbulb className="w-5 h-5" /> },
     { to: '/colony/storage', label: language === 'hi' ? 'बैकअप' : 'Backup', icon: <BatteryMedium className="w-5 h-5" /> },
     { to: `/colony/houses/${selectedHouseId}`, label: language === 'hi' ? 'मेरा घर' : 'My House', icon: <Building2 className="w-5 h-5" /> },
   ];
@@ -140,6 +142,29 @@ export const PublicShell: React.FC = () => {
           </div>
         </div>
       </header>
+
+      {/* Desktop Sub-Nav Tab Bar */}
+      <div className="bg-white border-b border-[#DDE9E0] hidden md:block">
+        <div className="max-w-[960px] mx-auto px-4 flex items-center gap-6 h-11 text-xs">
+          {tabs.map((tab) => (
+            <NavLink
+              key={tab.to}
+              to={tab.to}
+              end={tab.to === '/colony'}
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 h-full border-b-2 font-medium transition-colors ${
+                  isActive
+                    ? 'border-[#27A163] text-[#0C3B2B] font-semibold'
+                    : 'border-transparent text-[#5B6B62] hover:text-[#16241D]'
+                }`
+              }
+            >
+              {React.cloneElement(tab.icon, { className: 'w-4 h-4' })}
+              <span>{tab.label}</span>
+            </NavLink>
+          ))}
+        </div>
+      </div>
 
       {/* Main Container (Centered 960px column) */}
       <div className="flex-1 max-w-[960px] w-full mx-auto px-4 py-6 mb-20 md:mb-8">

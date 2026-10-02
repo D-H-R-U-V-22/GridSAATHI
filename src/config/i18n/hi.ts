@@ -17,10 +17,13 @@ export const hi = {
   outage: 'बिजली कटौती',
 
   // Power House Nav
-  commandCenter: 'कमांड सेंटर',
+  commandCenter: 'डैशबोर्ड (Dashboard)',
+  predictor: 'मौसम व पवन/सौर एमएल प्रिडिक्टर',
   forecasting: 'पूर्वानुमान (फोरकास्ट)',
   alerts: 'अलर्ट एवं सूचनाएं',
   smartLoad: 'स्मार्ट लोड प्रबंधन',
+  loadControl: 'बिजली बर्बादी रोकथाम व लोड कंट्रोल',
+  technicalLoss: 'तकनीकी नुकसान व उपकरण स्वास्थ्य',
   demandResponse: 'मांग नियंत्रण (DR)',
   sharedStorage: 'सामुदायिक बैटरी व बैकअप',
   settings: 'सेटिंग्स',
@@ -28,6 +31,8 @@ export const hi = {
   // Public Nav
   home: 'मुख्य पृष्ठ',
   forecast: 'बिजली का अनुमान',
+  alertsTab: 'अलर्ट',
+  recommendations: 'सुझाव व समाधान',
   messages: 'एसएमएस इनबॉक्स',
   backup: 'बैटरी बैकअप व कटौती',
   houses: 'मेरा घर',

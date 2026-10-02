@@ -187,3 +187,91 @@ export interface Topology {
 }
 
 export type UserRole = 'operator' | 'public';
+
+// Atmospheric & Satellite ML Predictor
+export interface SatelliteAtmosphericData {
+  ts: number;
+  windSpeed10m: number;      // m/s
+  windSpeed50m: number;      // hub-height m/s
+  windSpeed100m: number;     // upper boundary m/s
+  windDirectionDeg: number;   // 0-360 degrees azimuth
+  windGustMs: number;
+  cloudOpacityPct: number;    // 0-100% from GOES/INSAT satellite optical depth
+  cloudMotionVector: { speedKmH: number; azimuthDeg: number };
+  directNormalIrradianceDni: number; // W/m²
+  globalHorizontalIrradianceGhi: number; // W/m²
+  surfaceTempC: number;
+  relativeHumidityPct: number;
+  barometricPressureHpa: number;
+  dewPointC: number;
+}
+
+export interface PredictorHorizonForecast {
+  horizon: '15m' | '1h' | '3h' | '6h';
+  predictedWindKw: number;
+  predictedSolarKw: number;
+  totalRenewableKw: number;
+  confidenceScore: number;
+  weatherCondition: string;
+  rampRateRisk: 'nominal' | 'rapid_ramp_up' | 'rapid_ramp_down';
+}
+
+// Load Control & Wastage Prevention
+export interface ColonyBenchmark {
+  colonyId: string;
+  colonyName: string;
+  houseCount: number;
+  baselineDailyUnitsKwh: number; // e.g. 380 units/day
+  baselineHourlyUnitsKwh: number; // e.g. 15.8 units/hr
+  currentDrawKw: number;
+  expectedDrawKw: number;
+  deviationPct: number; // e.g. +24.5%
+  isWasting: boolean;
+  wasteDiagnosis?: string;
+  softCapKw: number;
+}
+
+export interface WastageIncident {
+  id: string;
+  colonyId: string;
+  colonyName: string;
+  detectedAt: number;
+  excessDrawKw: number;
+  excessUnitsPerHour: number;
+  estimatedCostLossPerHourInr: number;
+  suspectedCause: string;
+  status: 'active' | 'throttled' | 'resolved';
+}
+
+// Technical Loss & Asset Health Management
+export type AssetType = 'transformer' | 'underground_cable' | 'overhead_conductor' | 'switchgear';
+
+export interface GridAsset {
+  id: string;
+  name: string;
+  type: AssetType;
+  areaId: string;
+  feederId: string;
+  colonyId?: string;
+  installedYear: number;
+  designLifeYears: number;
+  remainingUsefulLifeYears: number;
+  healthIndexPct: number; // 0-100%
+  status: 'optimal' | 'monitoring' | 'degraded' | 'critical';
+  ratedCapacityKva?: number;
+  cableLengthMeters?: number;
+  cableSpec?: string;
+  diagnostics: {
+    coreTemperatureC?: number;
+    ambientTemperatureC: number;
+    insulationResistanceMegaOhms?: number; // Cable IR MΩ
+    dissolvedGasHydrogenPpm?: number;      // DGA ppm
+    dissolvedGasAcetylenePpm?: number;
+    neutralCurrentAmps?: number;
+    infraredHotspotTempC?: number;
+    lossPct: number; // calculated technical loss on this element
+  };
+  lastInspectedAt: number;
+  nextScheduledMaintenanceAt: number;
+  criticalIssue?: string;
+}

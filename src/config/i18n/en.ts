@@ -17,10 +17,13 @@ export const en = {
   outage: 'Outage',
 
   // Power House Nav
-  commandCenter: 'Command Center',
+  commandCenter: 'Dashboard',
+  predictor: 'ML Wind/Solar Predictor',
   forecasting: 'Forecasting',
   alerts: 'Alerts',
   smartLoad: 'Smart Load Management',
+  loadControl: 'Waste & Load Control',
+  technicalLoss: 'Technical Loss & Assets',
   demandResponse: 'Demand Response',
   sharedStorage: 'Shared Storage & Permissions',
   settings: 'Settings',
@@ -28,6 +31,8 @@ export const en = {
   // Public Nav
   home: 'Home',
   forecast: 'Forecast',
+  alertsTab: 'Alerts',
+  recommendations: 'Solutions',
   messages: 'Messages',
   backup: 'Backup & Outage',
   houses: 'My House',

@@ -11,6 +11,9 @@ import {
   ArrowRightLeft,
   SlidersHorizontal,
   Zap,
+  Satellite,
+  Activity,
+  Wrench,
 } from 'lucide-react';
 import { LastUpdated } from '../shared/LastUpdated';
 import { ScopePicker, ScopeValue } from '../shared/ScopePicker';
@@ -30,10 +33,13 @@ export const PowerHouseShell: React.FC = () => {
   const [isLabOpen, setIsLabOpen] = useState(false);
 
   const navLinks = [
-    { to: '/powerhouse', label: 'Command Center', icon: <LayoutDashboard className="w-4 h-4" /> },
+    { to: '/powerhouse', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+    { to: '/powerhouse/predictor', label: 'ML Wind/Solar Predictor', icon: <Satellite className="w-4 h-4" /> },
     { to: '/powerhouse/forecast', label: 'Forecasting', icon: <TrendingUp className="w-4 h-4" /> },
     { to: '/powerhouse/alerts/weather', label: 'Alerts & Warnings', icon: <Bell className="w-4 h-4" />, badge: activeAlertsCount },
     { to: '/powerhouse/load', label: 'Smart Load Mgmt', icon: <Gauge className="w-4 h-4" /> },
+    { to: '/powerhouse/load-control', label: 'Waste & Load Control', icon: <Activity className="w-4 h-4" /> },
+    { to: '/powerhouse/technical-loss', label: 'Technical Loss & Assets', icon: <Wrench className="w-4 h-4" /> },
     { to: '/powerhouse/demand-response', label: 'Demand Response', icon: <Radio className="w-4 h-4" /> },
     { to: '/powerhouse/storage', label: 'Shared Storage', icon: <BatteryMedium className="w-4 h-4" /> },
     { to: '/powerhouse/settings', label: 'System Settings', icon: <Settings className="w-4 h-4" /> },

@@ -33,8 +33,11 @@ Power House (220/66/11kV Substation)
 
 The app is divided into two connected portals:
 1. **Power House Portal (`/powerhouse`)**: For substation dispatchers and DISCOM operators.
-   - **Command Center**: Interactive SVG grid schematic, live 24h Supply Ribbon, real-time demand-supply balance chart.
-   - **Forecasting**: Multi-horizon predictions (6h, 24h, 7d) with p10–p90 confidence bands and automated shortfall window detection.
+   - **Dashboard**: Interactive SVG grid schematic, live 24h Supply Ribbon, real-time demand-supply balance chart.
+   - **ML Wind/Solar Predictor (`/powerhouse/predictor`)**: Real-time satellite optical vectors, INSAT cloud motion tracking, 10m/50m/100m wind shear vector fields, Physics-Informed Neural Network (PINN) + TFT generation forecasts, and an interactive **Recharts Visualization Dashboard** featuring dual-axis power generation area curves and dynamic trend lines for wind aerodynamic efficiency ($C_p$ %) and solar PV conversion performance ratio (PR %).
+   - **Forecasting (`/powerhouse/forecast`)**: Multi-horizon predictions (6h, 24h, 7d) with p10–p90 confidence bands and automated shortfall window detection.
+   - **Waste & Load Control (`/powerhouse/load-control`)**: Consumption baseline benchmarking (units/day), abnormal wastage surge detection (+18% to +35%), unmetered pump identification, and Volt-VAR Optimization (VVO) throttlers.
+   - **Technical Loss & Asset Health (`/powerhouse/technical-loss`)**: Predictive transformer and 11kV cable maintenance, winding core temperature telemetry, insulation resistance ($M\Omega$), dissolved gas analysis (DGA), remaining useful life (RUL), and work order dispatching.
    - **Alerts**: Auto-drafted weather and high-load advisories, AlertComposer with "What Residents Will See" live preview.
    - **Smart Load Management**: Feeder status matrix, capacity utilisation heat-maps, soft shedding limits, and house load ranking.
    - **Demand Response**: Dispatch voluntary appliance postponement requests and monitor real-time response curves.
@@ -45,6 +48,7 @@ The app is divided into two connected portals:
    - **Home**: Plain-language status headline, 24h Supply Ribbon (status only), battery runtime.
    - **Forecast**: Supply outlook status and colony usage curve (today vs usual) with "Best hours for heavy appliances".
    - **Alerts & Messages (`/colony/messages`)**: Public feed and phone SMS thread inbox.
+   - **Recommended Solutions & Action Plan (`/colony/recommendations`)**: Live citizen solutions and practical checklists generated from active Power House grid alerts, thunderstorm/weather vectors, peak demand response curtailment requests, and pre-cut blackout notifications.
    - **Backup & Outage (`/colony/storage`)**: Battery SoC gauge, blackout emergency backup requests, outage ETA log, and pre-cut consent.
    - **House Sub-portal (`/colony/houses/:houseId`)**: Household live draw, appliance breakdown donut, and demand-response checklist with "Done" checkboxes.
 
