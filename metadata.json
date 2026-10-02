@@ -1,0 +1,6 @@
+{
+  "name": "GridSaathi",
+  "description": "Grid Reliability & Renewable Intermittency Management Platform - Making clean power dependable, neighbourhood by neighbourhood.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
