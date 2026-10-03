@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { LandingPage } from '../features/landing/LandingPage';
 import { PowerHouseShell } from '../components/layout/PowerHouseShell';
 import { PublicShell } from '../components/layout/PublicShell';
+import { RequireRole } from '../guards/RequireRole';
 import { CommandCenterPage } from '../features/powerhouse/command-center/CommandCenterPage';
 import { ForecastingPage } from '../features/powerhouse/forecast/ForecastingPage';
 import { AlertsPage } from '../features/powerhouse/alerts/AlertsPage';
@@ -15,27 +16,28 @@ import { LoadControlPage } from '../features/powerhouse/load-control/LoadControl
 import { TechnicalLossPage } from '../features/powerhouse/technical-loss/TechnicalLossPage';
 
 import { PublicHomePage } from '../features/public/home/PublicHomePage';
-import { PublicForecastPage } from '../features/public/forecast/PublicForecastPage';
 import { PublicAlertsPage } from '../features/public/alerts/PublicAlertsPage';
 import { MessageBoxPage } from '../features/public/alerts/MessageBoxPage';
-import { PublicStoragePage } from '../features/public/storage/PublicStoragePage';
-import { HouseDashboardPage } from '../features/public/houses/HouseDashboardPage';
 import { RecommendationsPage } from '../features/public/recommendations/RecommendationsPage';
 
 import { UiKitchenSink } from '../dev/UiKitchenSink';
 import { DataDebug } from '../dev/DataDebug';
-import { useSessionStore } from '../store/useSessionStore';
 
 export const AppRoutes: React.FC = () => {
-  const selectedHouseId = useSessionStore((s) => s.selectedHouseId);
-
   return (
     <Routes>
       {/* Landing Portal Selector */}
       <Route path="/" element={<LandingPage />} />
 
-      {/* Power House Portal Routes */}
-      <Route path="/powerhouse" element={<PowerHouseShell />}>
+      {/* Power House Portal Routes (Guarded for Operator role) */}
+      <Route
+        path="/powerhouse"
+        element={
+          <RequireRole requiredRole="operator">
+            <PowerHouseShell />
+          </RequireRole>
+        }
+      >
         <Route index element={<CommandCenterPage />} />
         <Route path="forecast" element={<ForecastingPage />} />
         <Route path="predictor" element={<PredictorPage />} />
@@ -50,16 +52,18 @@ export const AppRoutes: React.FC = () => {
         <Route path="settings" element={<SettingsPage />} />
       </Route>
 
-      {/* Public / Colony Portal Routes */}
+      {/* Public / Colony Portal Routes (Home · Alerts · Solutions) */}
       <Route path="/colony" element={<PublicShell />}>
         <Route index element={<PublicHomePage />} />
-        <Route path="forecast" element={<PublicForecastPage />} />
         <Route path="alerts" element={<PublicAlertsPage />} />
         <Route path="recommendations" element={<RecommendationsPage />} />
         <Route path="messages" element={<MessageBoxPage />} />
-        <Route path="storage" element={<PublicStoragePage />} />
-        <Route path="houses" element={<Navigate to={`/colony/houses/${selectedHouseId}`} replace />} />
-        <Route path="houses/:houseId" element={<HouseDashboardPage />} />
+
+        {/* Removed routes redirected per Phase 2 spec */}
+        <Route path="forecast" element={<Navigate to="/colony" replace />} />
+        <Route path="storage" element={<Navigate to="/colony/alerts" replace />} />
+        <Route path="houses" element={<Navigate to="/colony" replace />} />
+        <Route path="houses/:houseId" element={<Navigate to="/colony" replace />} />
       </Route>
 
       {/* Dev / Debug Routes */}

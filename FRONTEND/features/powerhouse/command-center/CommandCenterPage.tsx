@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useGridStore } from '../../../store/useGridStore';
 import { useAlertStore } from '../../../store/useAlertStore';
 import { useDemandResponseStore } from '../../../store/useDemandResponseStore';
+import { useSessionStore } from '../../../store/useSessionStore';
+import { useLocationStore } from '../../../store/useLocationStore';
 import { GridSchematic } from '../../../components/grid/GridSchematic';
+import { AreaMapCard } from '../../ph/AreaMapCard';
 import { KpiFigure } from '../../../components/shared/KpiFigure';
 import { SupplyRibbon, RibbonSegment } from '../../../components/charts/SupplyRibbon';
 import { LiveAreaChart, ChartDataPoint } from '../../../components/charts/LiveAreaChart';
@@ -21,6 +24,8 @@ export const CommandCenterPage: React.FC = () => {
   const colonyStatuses = useGridStore((s) => s.colonyStatuses);
   const alerts = useAlertStore((s) => s.alerts);
   const drEvents = useDemandResponseStore((s) => s.events);
+  const language = useSessionStore((s) => s.language);
+  const currentArea = useLocationStore((s) => s.currentArea);
 
   const [ribbonSegments, setRibbonSegments] = useState<RibbonSegment[]>([]);
   const [chartPoints, setChartPoints] = useState<ChartDataPoint[]>([]);
@@ -96,49 +101,51 @@ export const CommandCenterPage: React.FC = () => {
       {/* Page Header */}
       <div>
         <h1 className="text-2xl font-bold font-heading text-[#0C3B2B] tracking-tight">
-          Pragati Substation Dashboard
+          {currentArea.name[language === 'hi' ? 'hi' : 'en']} — {language === 'hi' ? 'डैशबोर्ड' : 'Dashboard'}
         </h1>
         <p className="text-xs text-[#5B6B62] mt-1">
-          220kV primary distribution bus · Real-time renewable integration and load balancing
+          {language === 'hi'
+            ? '220/66/11kV प्राथमिक वितरण ग्रिड · रियल-टाइम नवीकरणीय ऊर्जा संतुलन एवं लोड मॉनिटरिंग'
+            : '220kV primary distribution bus · Real-time renewable integration and load balancing'}
         </p>
       </div>
 
       {/* KPI Figures Row (No icon bubbles, clean tabular figures) */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <KpiFigure
-          label="Total Demand"
+          label={language === 'hi' ? 'कुल मांग (Demand)' : 'Total Demand'}
           value={formatPower(totalDemand, 1)}
           trend="up"
           change="+2.4%"
-          subtext="vs 1h ago"
+          subtext={language === 'hi' ? '1 घंटे पहले की तुलना में' : 'vs 1h ago'}
         />
         <KpiFigure
-          label="Total Supply"
+          label={language === 'hi' ? 'कुल आपूर्ति (Supply)' : 'Total Supply'}
           value={formatPower(totalSupply, 1)}
-          subtext="Import + Renewables"
+          subtext={language === 'hi' ? 'ग्रिड + नवीकरणीय' : 'Import + Renewables'}
         />
         <KpiFigure
-          label="Renewable Share"
+          label={language === 'hi' ? 'स्वच्छ ऊर्जा हिस्सा' : 'Renewable Share'}
           value={formatPercent(renewableSharePct, 0)}
           change={`${formatPower(renewableKw, 0)}`}
-          subtext="Solar & Wind"
+          subtext={language === 'hi' ? 'सौर एवं पवन ऊर्जा' : 'Solar & Wind'}
         />
         <KpiFigure
-          label="Grid Import"
+          label={language === 'hi' ? 'ग्रिड आयात' : 'Grid Import'}
           value={formatPower(powerHouseReading.gridImportKw, 1)}
-          subtext="Central DISCOM"
+          subtext={language === 'hi' ? 'डिस्कॉम मुख्य ग्रिड' : 'Central DISCOM'}
         />
         <KpiFigure
-          label="Active Alerts"
+          label={language === 'hi' ? 'सक्रिय अलर्ट' : 'Active Alerts'}
           value={activeAlerts.length}
           trend={activeAlerts.length > 0 ? 'down' : 'neutral'}
-          subtext="Dispatched"
+          subtext={language === 'hi' ? 'प्रसारित' : 'Dispatched'}
         />
         <KpiFigure
-          label="Colonies at Risk"
+          label={language === 'hi' ? 'जोखिम में कॉलोनियां' : 'Colonies at Risk'}
           value={coloniesAtRisk}
           trend={coloniesAtRisk > 0 ? 'down' : 'neutral'}
-          subtext="Constrained/Outage"
+          subtext={language === 'hi' ? 'सीमित / कटौती' : 'Constrained/Outage'}
         />
       </div>
 
@@ -147,22 +154,27 @@ export const CommandCenterPage: React.FC = () => {
         <GridSchematic />
       </section>
 
+      {/* Geographic Boundary & Colony Distribution Map (Leaflet OSM) */}
+      <AreaMapCard />
+
       {/* 24-Hour Supply Ribbon */}
       <section className="bg-white rounded-[12px] border border-[#DDE9E0] p-5">
         <div className="flex items-center justify-between mb-3">
           <div>
             <h2 className="text-sm font-semibold text-[#0C3B2B]">
-              24-Hour Supply & Intermittency Outlook
+              {language === 'hi' ? '24 घंटे की आपूर्ति व नवीकरणीय ऊर्जा स्थिति' : '24-Hour Supply & Intermittency Outlook'}
             </h2>
             <p className="text-xs text-[#5B6B62]">
-              Predicted supply status with flagged shortfall and load risk windows
+              {language === 'hi'
+                ? 'अनुमानित आपूर्ति स्थिति एवं चिन्हित पीक लोड / सौर-पवन कमी समय-सारणी'
+                : 'Predicted supply status with flagged shortfall and load risk windows'}
             </p>
           </div>
           <button
             onClick={() => navigate('/powerhouse/forecast')}
             className="text-xs font-semibold text-[#27A163] hover:text-[#13724A] cursor-pointer"
           >
-            Open Full Forecast →
+            {language === 'hi' ? 'पूर्ण पूर्वानुमान खोलें →' : 'Open Full Forecast →'}
           </button>
         </div>
 

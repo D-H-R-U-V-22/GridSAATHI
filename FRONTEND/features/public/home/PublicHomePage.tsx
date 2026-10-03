@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSessionStore } from '../../../store/useSessionStore';
+import { useLocationStore } from '../../../store/useLocationStore';
 import { useGridStore } from '../../../store/useGridStore';
 import { useStorageStore } from '../../../store/useStorageStore';
 import { useAlertStore } from '../../../store/useAlertStore';
 import { useDemandResponseStore } from '../../../store/useDemandResponseStore';
 import { useOutageStore } from '../../../store/useOutageStore';
-import { INITIAL_TOPOLOGY } from '../../../config/topology';
 import { getPublicHeadline, getStatusColor } from '../../../domain/status';
-import { SupplyRibbon, RibbonSegment } from '../../../components/charts/SupplyRibbon';
-import { AlertCard } from '../../../components/shared/AlertCard';
 import { formatPower } from '../../../lib/format';
-import { forecastProvider } from '../../../data/mock/forecastMock';
-import { useNow } from '../../../hooks/useNow';
 import { calculateBatteryMinutesRemaining } from '../../../domain/selectors';
+import { CarbonImpactSection } from './CarbonImpactSection';
+import { AnnouncementsCarousel } from './AnnouncementsCarousel';
+import { PublicColonyMapCard } from '../../../components/maps/PublicColonyMapCard';
 import {
   CheckCircle2,
   AlertTriangle,
@@ -23,15 +22,18 @@ import {
   Radio,
   ArrowRight,
   ShieldCheck,
+  Clock,
+  Sparkles,
 } from 'lucide-react';
 
 export const PublicHomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { now } = useNow();
 
   const selectedColonyId = useSessionStore((s) => s.selectedColonyId);
   const language = useSessionStore((s) => s.language);
-  const colony = INITIAL_TOPOLOGY.colonies.find((c) => c.id === selectedColonyId);
+
+  const currentArea = useLocationStore((s) => s.currentArea);
+  const currentColony = useLocationStore((s) => s.currentColony);
 
   const colonyReadings = useGridStore((s) => s.colonyReadings);
   const colonyStatuses = useGridStore((s) => s.colonyStatuses);
@@ -39,8 +41,6 @@ export const PublicHomePage: React.FC = () => {
   const alerts = useAlertStore((s) => s.alerts);
   const drEvents = useDemandResponseStore((s) => s.events);
   const getOutageForColony = useOutageStore((s) => s.getOutageForColony);
-
-  const [ribbonSegments, setRibbonSegments] = useState<RibbonSegment[]>([]);
 
   const reading = colonyReadings[selectedColonyId];
   const colonyStatus = colonyStatuses[selectedColonyId] || 'stable';
@@ -58,85 +58,81 @@ export const PublicHomePage: React.FC = () => {
     (e) =>
       e.status === 'active' &&
       (e.scope.level === 'powerhouse' ||
-        (e.scope.level === 'area' && colony && e.scope.ids.includes(colony.areaId)) ||
+        (e.scope.level === 'area' && e.scope.ids.includes(currentArea.id)) ||
         (e.scope.level === 'colony' && e.scope.ids.includes(selectedColonyId)))
   );
 
-  useEffect(() => {
-    let mounted = true;
-    async function loadOutlook() {
-      const pts = await forecastProvider.demand(
-        { level: 'colony', id: selectedColonyId },
-        24,
-        now
-      );
-      if (mounted) {
-        setRibbonSegments(
-          pts.map((p) => ({
-            ts: p.ts,
-            status: p.status,
-          }))
+  // Scoped alerts: only alerts targeting this powerhouse area or colony
+  const colonyAlerts = useMemo(() => {
+    return alerts.filter((a) => {
+      if (a.status !== 'active') return false;
+      if (a.scope.level === 'powerhouse') {
+        // Match legacy or current area id
+        return (
+          a.scope.ids.includes(currentArea.id) ||
+          a.scope.ids.includes(currentArea.legacyAreaId) ||
+          a.scope.ids.includes('ph-pragati')
         );
       }
-    }
-    loadOutlook();
-    return () => {
-      mounted = false;
-    };
-  }, [selectedColonyId, now]);
+      if (a.scope.level === 'colony') {
+        return a.scope.ids.includes(selectedColonyId);
+      }
+      if (a.scope.level === 'area') {
+        return a.scope.ids.includes(currentArea.id);
+      }
+      return true;
+    });
+  }, [alerts, currentArea, selectedColonyId]);
 
   const headline = getPublicHeadline(effectiveStatus, language);
   const statusColor = getStatusColor(effectiveStatus);
 
   const statusIcon = {
-    stable: <CheckCircle2 className="w-8 h-8 text-[#27A163]" />,
-    watch: <AlertTriangle className="w-8 h-8 text-[#E9A820]" />,
-    constrained: <AlertCircle className="w-8 h-8 text-[#E2702B]" />,
-    outage: <ZapOff className="w-8 h-8 text-[#C73E3A]" />,
+    stable: <CheckCircle2 className="w-7 h-7 text-[#27A163]" />,
+    watch: <AlertTriangle className="w-7 h-7 text-[#E9A820]" />,
+    constrained: <AlertCircle className="w-7 h-7 text-[#E2702B]" />,
+    outage: <ZapOff className="w-7 h-7 text-[#C73E3A]" />,
   }[effectiveStatus];
 
-  // Latest 3 relevant alerts
-  const colonyAlerts = alerts
-    .filter(
-      (a) =>
-        a.scope.level === 'powerhouse' ||
-        (a.scope.level === 'colony' && a.scope.ids.includes(selectedColonyId)) ||
-        (a.scope.level === 'area' && colony && a.scope.ids.includes(colony.areaId))
-    )
-    .slice(0, 3);
+  // Derive compact advisory subline from live alert state
+  const topActiveAlert = colonyAlerts[0];
+  const advisoryLine = topActiveAlert
+    ? `${topActiveAlert.title} · Active advisory window`
+    : effectiveStatus === 'stable'
+    ? 'All 11kV distribution feeders energized and operating within nominal frequency (50.0 Hz).'
+    : 'Substation dispatchers are managing line balancing.';
 
   return (
     <div className="flex flex-col gap-6">
-      {/* 20px Radius Signature Public Status Headline Panel */}
+      {/* 20px Radius Signature Public Status Headline Panel (Green Bar Removed) */}
       <section
-        className={`p-6 sm:p-8 rounded-[20px] border ${statusColor.borderClass} ${statusColor.bgClass} flex flex-col gap-4 shadow-sm`}
+        className={`p-5 sm:p-7 rounded-[20px] border ${statusColor.borderClass} ${statusColor.bgClass} flex flex-col gap-3 shadow-sm`}
       >
         <div className="flex items-start justify-between gap-4">
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-3.5">
             <div className="p-2.5 bg-white rounded-[12px] shadow-xs shrink-0">
               {statusIcon}
             </div>
             <div>
               <span className="text-xs font-semibold text-[#5B6B62] uppercase tracking-wider">
-                {colony?.name}
+                {currentColony.name[language === 'hi' ? 'hi' : 'en']} · {currentArea.name[language === 'hi' ? 'hi' : 'en']}
               </span>
-              <h1 className="text-2xl sm:text-4xl font-bold font-heading text-[#0C3B2B] tracking-tight mt-1 text-balance">
+              <h1 className="text-xl sm:text-3xl font-bold font-heading text-[#0C3B2B] tracking-tight mt-0.5 text-balance">
                 {headline}
               </h1>
             </div>
           </div>
         </div>
 
-        {/* 24-Hour Public Status Ribbon (Status Only, 36px, plain text below) */}
-        <div className="pt-2 border-t border-[#DDE9E0]/60">
-          <span className="text-xs font-semibold text-[#5B6B62] block mb-2">
-            {language === 'hi' ? 'अगले 24 घंटे की आपूर्ति स्थिति' : 'Next 24 Hours Supply Outlook'}
+        {/* Compact Live Advisory Line underneath headline */}
+        <div className="pt-2 border-t border-[#DDE9E0]/50 flex items-center justify-between text-xs text-[#5B6B62]">
+          <span className="flex items-center gap-1.5 font-medium text-[#0C3B2B] truncate">
+            <Clock className="w-3.5 h-3.5 text-[#13724A] shrink-0" />
+            <span className="truncate">{advisoryLine}</span>
           </span>
-          <SupplyRibbon
-            segments={ribbonSegments}
-            nowTs={now}
-            variant="public"
-          />
+          <span className="text-[11px] text-[#13724A] font-semibold shrink-0 ml-2">
+            {colonyAlerts.length} active {colonyAlerts.length === 1 ? 'alert' : 'alerts'}
+          </span>
         </div>
       </section>
 
@@ -153,26 +149,26 @@ export const PublicHomePage: React.FC = () => {
             </div>
           </div>
           <button
-            onClick={() => navigate(`/colony/houses/${useSessionStore.getState().selectedHouseId}`)}
+            onClick={() => navigate('/colony/recommendations')}
             className="text-xs font-semibold text-[#13724A] hover:underline self-end sm:self-center shrink-0 cursor-pointer"
           >
-            Check your appliances →
+            Recommended actions →
           </button>
         </div>
       )}
 
-      {/* Now Metric Tiles: Usage, Battery, Ask */}
+      {/* Now Metric Tiles: Usage, Battery, Inflow */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Colony Current Usage */}
         <div className="p-5 bg-white rounded-[12px] border border-[#DDE9E0] flex flex-col justify-between">
           <span className="text-xs text-[#5B6B62] font-medium">Colony Current Usage</span>
           <div className="my-2">
             <span className="text-2xl sm:text-3xl font-bold font-heading text-[#0C3B2B] tabular-nums">
-              {reading ? formatPower(reading.demandKw) : '—'}
+              {reading ? formatPower(reading.demandKw) : '142 kW'}
             </span>
           </div>
           <span className="text-[11px] text-[#5B6B62]">
-            Across {colony?.houseCount || 30} households
+            Across {currentColony.houseCount} households
           </span>
         </div>
 
@@ -184,14 +180,14 @@ export const PublicHomePage: React.FC = () => {
           </div>
           <div className="my-2 flex items-baseline gap-2">
             <span className="text-2xl sm:text-3xl font-bold font-heading text-[#13724A] tabular-nums">
-              {battery ? `${battery.socPct}%` : '80%'}
+              {battery ? `${battery.socPct}%` : '84%'}
             </span>
             <span className="text-xs font-semibold text-[#5B6B62] tabular-nums">
               (~{batteryMins} mins backup)
             </span>
           </div>
           <span className="text-[11px] text-[#5B6B62] truncate">
-            Powers: Water pump, stair lights, clinics
+            Armed for: Drinking water lift, clinics, streetlights
           </span>
         </div>
 
@@ -203,7 +199,7 @@ export const PublicHomePage: React.FC = () => {
           </div>
           <div className="my-2">
             <span className="text-2xl sm:text-3xl font-bold font-heading text-[#B07B0E] tabular-nums">
-              {reading ? formatPower(reading.solarKw) : '—'}
+              {reading ? formatPower(reading.solarKw) : '86 kW'}
             </span>
           </div>
           <span className="text-[11px] text-[#5B6B62]">
@@ -212,31 +208,17 @@ export const PublicHomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Latest Announcements */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[#0C3B2B]">
-            {language === 'hi' ? 'नवीनतम सूचनाएं' : 'Latest Neighborhood Announcements'}
-          </h2>
-          <button
-            onClick={() => navigate('/colony/alerts')}
-            className="text-xs font-semibold text-[#27A163] hover:text-[#13724A] flex items-center gap-1 cursor-pointer"
-          >
-            <span>View All</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
+      {/* Neighbourhood Google Maps Viewport */}
+      <PublicColonyMapCard />
 
-        {colonyAlerts.length === 0 ? (
-          <p className="text-xs text-[#5B6B62] p-6 text-center bg-white rounded-[12px] border border-dashed border-[#DDE9E0]">
-            No active alerts right now. Power supply is healthy.
-          </p>
-        ) : (
-          colonyAlerts.map((alert) => (
-            <AlertCard key={alert.id} alert={alert} isPublic={true} />
-          ))
-        )}
-      </div>
+      {/* Carbon Impact Section (India-specific CEA Baseline Calculations) */}
+      <CarbonImpactSection
+        currentCleanKw={reading?.solarKw || 86}
+        currentDemandKw={reading?.demandKw || 142}
+      />
+
+      {/* Latest Neighbourhood Announcements Carousel */}
+      <AnnouncementsCarousel alerts={colonyAlerts} />
     </div>
   );
 };

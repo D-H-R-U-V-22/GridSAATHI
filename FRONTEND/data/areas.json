@@ -1,0 +1,429 @@
+[
+  {
+    "id": "area-lucknow-central",
+    "legacyAreaId": "ph-pragati",
+    "name": {
+      "en": "Pragati Central Substation, Lucknow",
+      "hi": "प्रगति सेंट्रल सबस्टेशन, लखनऊ"
+    },
+    "state": {
+      "en": "Uttar Pradesh",
+      "hi": "उत्तर प्रदेश"
+    },
+    "district": {
+      "en": "Lucknow",
+      "hi": "लखनऊ"
+    },
+    "lat": 26.8467,
+    "lng": 80.9462,
+    "geohash": "tu9",
+    "timezone": "Asia/Kolkata",
+    "lgdCode": "164",
+    "climateProfile": "subtropical_plains",
+    "capacityKw": 18000,
+    "installedSolarKw": 5800,
+    "installedWindKw": 4200,
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [80.9100, 26.8200],
+          [80.9850, 26.8200],
+          [80.9950, 26.8750],
+          [80.9200, 26.8780],
+          [80.9100, 26.8200]
+        ]
+      ]
+    },
+    "feeders": [
+      { "id": "feeder-shanti", "name": "Shanti Vihar 11kV Feeder", "capacityKw": 2200 },
+      { "id": "feeder-kisan", "name": "Kisan Nagar 11kV Feeder", "capacityKw": 2400 },
+      { "id": "feeder-mayur", "name": "Mayur Vihar 11kV Feeder", "capacityKw": 2600 },
+      { "id": "feeder-surya", "name": "Surya Nagar Solar Feeder", "capacityKw": 2500 }
+    ],
+    "colonies": [
+      {
+        "id": "colony-shanti-vihar",
+        "name": { "en": "Shanti Vihar Colony", "hi": "शान्ति विहार कॉलोनी" },
+        "lat": 26.8485,
+        "lng": 80.9430,
+        "houseCount": 32,
+        "feederId": "feeder-shanti",
+        "batteryId": "bat-shanti",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [80.9380, 26.8440],
+              [80.9490, 26.8440],
+              [80.9490, 26.8530],
+              [80.9380, 26.8530],
+              [80.9380, 26.8440]
+            ]
+          ]
+        }
+      },
+      {
+        "id": "colony-kisan-4",
+        "name": { "en": "Kisan Nagar Sector 4", "hi": "किसान नगर सेक्टर 4" },
+        "lat": 26.8390,
+        "lng": 80.9320,
+        "houseCount": 28,
+        "feederId": "feeder-kisan",
+        "batteryId": "bat-kisan",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [80.9280, 26.8350],
+              [80.9370, 26.8350],
+              [80.9370, 26.8430],
+              [80.9280, 26.8430],
+              [80.9280, 26.8350]
+            ]
+          ]
+        }
+      },
+      {
+        "id": "colony-mayur-a",
+        "name": { "en": "Mayur Vihar Block A", "hi": "मयूर विहार ब्लॉक ए" },
+        "lat": 26.8560,
+        "lng": 80.9570,
+        "houseCount": 30,
+        "feederId": "feeder-mayur",
+        "batteryId": "bat-mayur-a",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [80.9500, 26.8510],
+              [80.9630, 26.8510],
+              [80.9630, 26.8610],
+              [80.9500, 26.8610],
+              [80.9500, 26.8510]
+            ]
+          ]
+        }
+      },
+      {
+        "id": "colony-surya-c",
+        "name": { "en": "Surya Nagar Phase 2", "hi": "सूर्य नगर फेज़ 2" },
+        "lat": 26.8620,
+        "lng": 80.9700,
+        "houseCount": 35,
+        "feederId": "feeder-surya",
+        "batteryId": "bat-surya-c",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [80.9640, 26.8580],
+              [80.9760, 26.8580],
+              [80.9760, 26.8670],
+              [80.9640, 26.8670],
+              [80.9640, 26.8580]
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "area-jaipur-north",
+    "legacyAreaId": "ph-jaipur",
+    "name": {
+      "en": "Kishan Bagh Substation, Jaipur",
+      "hi": "किशन बाग सबस्टेशन, जयपुर"
+    },
+    "state": {
+      "en": "Rajasthan",
+      "hi": "राजस्थान"
+    },
+    "district": {
+      "en": "Jaipur",
+      "hi": "जयपुर"
+    },
+    "lat": 26.9124,
+    "lng": 75.7873,
+    "geohash": "tss",
+    "timezone": "Asia/Kolkata",
+    "lgdCode": "86",
+    "climateProfile": "semi_arid_high_solar",
+    "capacityKw": 22000,
+    "installedSolarKw": 9400,
+    "installedWindKw": 2600,
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [75.7400, 26.8800],
+          [75.8300, 26.8800],
+          [75.8350, 26.9500],
+          [75.7450, 26.9450],
+          [75.7400, 26.8800]
+        ]
+      ]
+    },
+    "feeders": [
+      { "id": "feeder-vidyadhar", "name": "Vidyadhar Nagar 11kV Feeder", "capacityKw": 2800 },
+      { "id": "feeder-mansarovar", "name": "Mansarovar Solar Feeder", "capacityKw": 3100 }
+    ],
+    "colonies": [
+      {
+        "id": "colony-vidyadhar-3",
+        "name": { "en": "Vidyadhar Sector 3", "hi": "विद्याधर सेक्टर 3" },
+        "lat": 26.9240,
+        "lng": 75.7920,
+        "houseCount": 36,
+        "feederId": "feeder-vidyadhar",
+        "batteryId": "bat-vidyadhar-3",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [75.7850, 26.9180],
+              [75.7990, 26.9180],
+              [75.7990, 26.9300],
+              [75.7850, 26.9300],
+              [75.7850, 26.9180]
+            ]
+          ]
+        }
+      },
+      {
+        "id": "colony-pratap-nagar",
+        "name": { "en": "Pratap Nagar Solar Hub", "hi": "प्रताप नगर सोलर हब" },
+        "lat": 26.9050,
+        "lng": 75.7790,
+        "houseCount": 40,
+        "feederId": "feeder-mansarovar",
+        "batteryId": "bat-pratap",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [75.7720, 26.8990],
+              [75.7860, 26.8990],
+              [75.7860, 26.9110],
+              [75.7720, 26.9110],
+              [75.7720, 26.8990]
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "area-chennai-south",
+    "legacyAreaId": "ph-chennai",
+    "name": {
+      "en": "Velachery Substation, Chennai",
+      "hi": "वेलाचेरी सबस्टेशन, चेन्नई"
+    },
+    "state": {
+      "en": "Tamil Nadu",
+      "hi": "तमिलनाडु"
+    },
+    "district": {
+      "en": "Chennai",
+      "hi": "चेन्नई"
+    },
+    "lat": 12.9800,
+    "lng": 80.2200,
+    "geohash": "tf3",
+    "timezone": "Asia/Kolkata",
+    "lgdCode": "565",
+    "climateProfile": "tropical_coastal",
+    "capacityKw": 20000,
+    "installedSolarKw": 6200,
+    "installedWindKw": 5800,
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [80.1800, 12.9400],
+          [80.2600, 12.9400],
+          [80.2600, 13.0200],
+          [80.1800, 13.0200],
+          [80.1800, 12.9400]
+        ]
+      ]
+    },
+    "feeders": [
+      { "id": "feeder-omr-green", "name": "OMR Coastal Feeder", "capacityKw": 2700 },
+      { "id": "feeder-tambaram", "name": "Tambaram Link Feeder", "capacityKw": 2600 }
+    ],
+    "colonies": [
+      {
+        "id": "colony-bhavani-nagar",
+        "name": { "en": "Bhavani Nagar Enclave", "hi": "भवानी नगर एन्क्लेव" },
+        "lat": 12.9820,
+        "lng": 80.2180,
+        "houseCount": 34,
+        "feederId": "feeder-omr-green",
+        "batteryId": "bat-bhavani",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [80.2100, 12.9750],
+              [80.2260, 12.9750],
+              [80.2260, 12.9890],
+              [80.2100, 12.9890],
+              [80.2100, 12.9750]
+            ]
+          ]
+        }
+      },
+      {
+        "id": "colony-palavakkam-beach",
+        "name": { "en": "Palavakkam Sea Breeze", "hi": "पलवक्कम सी ब्रीज़" },
+        "lat": 12.9690,
+        "lng": 80.2450,
+        "houseCount": 26,
+        "feederId": "feeder-omr-green",
+        "batteryId": "bat-palavakkam",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [80.2380, 12.9620],
+              [80.2520, 12.9620],
+              [80.2520, 12.9760],
+              [80.2380, 12.9760],
+              [80.2380, 12.9620]
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "area-pune-west",
+    "legacyAreaId": "ph-pune",
+    "name": {
+      "en": "Kothrud Substation, Pune",
+      "hi": "कोथरुड सबस्टेशन, पुणे"
+    },
+    "state": {
+      "en": "Maharashtra",
+      "hi": "महाराष्ट्र"
+    },
+    "district": {
+      "en": "Pune",
+      "hi": "पुणे"
+    },
+    "lat": 18.5074,
+    "lng": 73.8077,
+    "geohash": "tek",
+    "timezone": "Asia/Kolkata",
+    "lgdCode": "490",
+    "climateProfile": "western_ghats_wind",
+    "capacityKw": 19000,
+    "installedSolarKw": 4800,
+    "installedWindKw": 7200,
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [73.7600, 18.4700],
+          [73.8500, 18.4700],
+          [73.8550, 18.5400],
+          [73.7650, 18.5400],
+          [73.7600, 18.4700]
+        ]
+      ]
+    },
+    "feeders": [
+      { "id": "feeder-paud-hill", "name": "Paud Hill Wind Feeder", "capacityKw": 2900 },
+      { "id": "feeder-karve-rd", "name": "Karve Road 11kV Feeder", "capacityKw": 2500 }
+    ],
+    "colonies": [
+      {
+        "id": "colony-shivaji-hills",
+        "name": { "en": "Shivaji Hills Residency", "hi": "शिवाजी हिल्स रेजिडेंसी" },
+        "lat": 18.5090,
+        "lng": 73.8060,
+        "houseCount": 38,
+        "feederId": "feeder-paud-hill",
+        "batteryId": "bat-shivaji",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [73.7990, 18.5020],
+              [73.8130, 18.5020],
+              [73.8130, 18.5160],
+              [73.7990, 18.5160],
+              [73.7990, 18.5020]
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "area-guwahati-east",
+    "legacyAreaId": "ph-guwahati",
+    "name": {
+      "en": "Dispur Substation, Guwahati",
+      "hi": "दिसपुर सबस्टेशन, गुवाहाटी"
+    },
+    "state": {
+      "en": "Assam",
+      "hi": "असम"
+    },
+    "district": {
+      "en": "Kamrup Metropolitan",
+      "hi": "कामरूप मेट्रोपॉलिटन"
+    },
+    "lat": 26.1445,
+    "lng": 91.7362,
+    "geohash": "wh9",
+    "timezone": "Asia/Kolkata",
+    "lgdCode": "283",
+    "climateProfile": "eastern_humid_hills",
+    "capacityKw": 16000,
+    "installedSolarKw": 4100,
+    "installedWindKw": 2200,
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [91.6800, 26.1000],
+          [91.7800, 26.1000],
+          [91.7800, 26.1800],
+          [91.6800, 26.1800],
+          [91.6800, 26.1000]
+        ]
+      ]
+    },
+    "feeders": [
+      { "id": "feeder-brahmaputra", "name": "Brahmaputra Valley Feeder", "capacityKw": 2400 },
+      { "id": "feeder-capital-complex", "name": "Capital Complex 11kV Feeder", "capacityKw": 2300 }
+    ],
+    "colonies": [
+      {
+        "id": "colony-bhetapara-valley",
+        "name": { "en": "Bhetapara Eco Colony", "hi": "भेटापारा इको कॉलोनी" },
+        "lat": 26.1420,
+        "lng": 91.7390,
+        "houseCount": 29,
+        "feederId": "feeder-brahmaputra",
+        "batteryId": "bat-bhetapara",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [91.7310, 26.1360],
+              [91.7470, 26.1360],
+              [91.7470, 26.1480],
+              [91.7310, 26.1480],
+              [91.7310, 26.1360]
+            ]
+          ]
+        }
+      }
+    ]
+  }
+]

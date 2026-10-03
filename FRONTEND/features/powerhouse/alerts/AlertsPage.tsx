@@ -5,12 +5,15 @@ import { Button } from '../../../components/ui/Button';
 import { AlertComposer } from '../../../components/shared/AlertComposer';
 import { AlertCard } from '../../../components/shared/AlertCard';
 import { useAlertStore } from '../../../store/useAlertStore';
+import { useSessionStore } from '../../../store/useSessionStore';
 import { weatherSim } from '../../../data/mock/weatherMock';
 import { useGridStore } from '../../../store/useGridStore';
 import { INITIAL_TOPOLOGY } from '../../../config/topology';
 import { formatPower } from '../../../lib/format';
-import { Cloud, Wind, Sun, Droplets, Zap, Wrench, Check } from 'lucide-react';
+import { Cloud, Wind, Sun, Droplets, Zap, Wrench, Check, Sparkles, Send } from 'lucide-react';
 import { useToast } from '../../../components/ui/Toast';
+import { RecommendationsFeed } from '../../ph/RecommendationsFeed';
+import { DispatchLogTable } from '../../ph/DispatchLogTable';
 
 export const AlertsPage: React.FC = () => {
   const { tab = 'weather' } = useParams<{ tab: string }>();
@@ -23,13 +26,34 @@ export const AlertsPage: React.FC = () => {
   const deleteDraft = useAlertStore((s) => s.deleteDraft);
   const feederReadings = useGridStore((s) => s.feederReadings);
   const simClock = useGridStore((s) => s.simClock);
+  const language = useSessionStore((s) => s.language);
 
   const weather = weatherSim.getSnapshot(simClock);
 
   const tabList = [
-    { id: 'weather', label: 'Weather & Intermittency', count: drafts.filter((d) => d.type === 'weather').length },
-    { id: 'high-load', label: 'High Load & Overload', count: drafts.filter((d) => d.type === 'high_load').length },
-    { id: 'system', label: 'System & Maintenance', count: drafts.filter((d) => d.type === 'maintenance' || d.type === 'system').length },
+    {
+      id: 'weather',
+      label: language === 'hi' ? 'मौसम व सौर उतार-चढ़ाव' : 'Weather & Intermittency',
+      count: drafts.filter((d) => d.type === 'weather').length,
+    },
+    {
+      id: 'high-load',
+      label: language === 'hi' ? 'अधिक लोड व ओवरलोड' : 'High Load & Overload',
+      count: drafts.filter((d) => d.type === 'high_load').length,
+    },
+    {
+      id: 'recommendations',
+      label: language === 'hi' ? 'एमएल अनुशंसाएं' : 'ML Recommendations',
+    },
+    {
+      id: 'dispatch',
+      label: language === 'hi' ? 'फोन डिलीवरी लॉग' : 'Phone Dispatch Log',
+    },
+    {
+      id: 'system',
+      label: language === 'hi' ? 'सिस्टम व रखरखाव' : 'System & Maintenance',
+      count: drafts.filter((d) => d.type === 'maintenance' || d.type === 'system').length,
+    },
   ];
 
   const handleTabChange = (t: string) => {
@@ -65,15 +89,23 @@ export const AlertsPage: React.FC = () => {
       {/* Top Header */}
       <div>
         <h1 className="text-2xl font-bold font-heading text-[#0C3B2B] tracking-tight">
-          Alerts, Warnings & Citizen Broadcasts
+          {language === 'hi' ? 'अलर्ट, चेतावनियां एवं नागरिक प्रसारण' : 'Alerts, Warnings & Citizen Broadcasts'}
         </h1>
         <p className="text-xs text-[#5B6B62] mt-1">
-          Auto-drafted threshold alerts and targeted multi-channel announcements to colonies
+          {language === 'hi'
+            ? 'ऑटो-ड्राफ्टेड सीमा अलर्ट और कॉलोनियों को लक्षित मल्टी-चैनल घोषणाएं'
+            : 'Auto-drafted threshold alerts and targeted multi-channel announcements to colonies'}
         </p>
       </div>
 
       {/* Tabs */}
       <Tabs tabs={tabList} activeTab={tab} onChange={handleTabChange} />
+
+      {/* Tab: ML Recommendations */}
+      {tab === 'recommendations' && <RecommendationsFeed />}
+
+      {/* Tab: Phone Dispatch Log */}
+      {tab === 'dispatch' && <DispatchLogTable />}
 
       {/* Tab 1: Weather & Intermittency Snapshot */}
       {tab === 'weather' && (

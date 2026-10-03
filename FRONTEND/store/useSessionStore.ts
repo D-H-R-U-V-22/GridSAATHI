@@ -4,6 +4,7 @@ import { Language } from '../config/i18n';
 
 interface SessionState {
   role: UserRole;
+  isPreviewMode: boolean;
   selectedAreaId: string;
   selectedFeederId: string;
   selectedColonyId: string;
@@ -11,6 +12,7 @@ interface SessionState {
   language: Language;
   hasConsentedInSession: boolean;
   setRole: (role: UserRole) => void;
+  setPreviewMode: (preview: boolean) => void;
   setSelectedAreaId: (id: string) => void;
   setSelectedFeederId: (id: string) => void;
   setSelectedColonyId: (id: string) => void;
@@ -43,6 +45,7 @@ export const useSessionStore = create<SessionState>((set) => {
 
   return {
     role: persisted.role || 'operator',
+    isPreviewMode: false,
     selectedAreaId: persisted.selectedAreaId || 'area-north',
     selectedFeederId: persisted.selectedFeederId || 'feeder-shanti',
     selectedColonyId: persisted.selectedColonyId || 'colony-shanti-vihar',
@@ -63,6 +66,8 @@ export const useSessionStore = create<SessionState>((set) => {
         });
         return next;
       }),
+
+    setPreviewMode: (isPreviewMode) => set({ isPreviewMode }),
 
     setSelectedAreaId: (selectedAreaId) =>
       set((state) => {
